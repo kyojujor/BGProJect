@@ -50,6 +50,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\BGModel\BGModel.csproj">
+      <Project>{117031c2-4baf-45cc-8b96-b82281eb1425}</Project>
+      <Name>BGModel</Name>
+    </ProjectReference>
     <ProjectReference Include="..\BGService\BGService.csproj">
       <Project>{3e360640-ab0c-4d69-b9ed-1f1f9bc32700}</Project>
       <Name>BGService</Name>
