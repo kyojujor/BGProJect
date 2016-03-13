@@ -28,13 +28,7 @@ namespace BGConsoleTest
             //var temp = XmlHelper.Test(filePath); 
             //var ret = XmlHelper.ConvertList<ItemUse>(temp);
 
-            var className = XmlHelper.GetHostPath(filePath);
-            Type classType = XmlHelper.GetModelOfpath(className);
-
-            MethodInfo method = typeof(XmlHelper).GetMethod("ConvertList");
-            var methodTemp = method.MakeGenericMethod(classType);
-            var tempP = new object[] { XmlHelper.Test(filePath) };
-            var b =methodTemp.Invoke(null, tempP);
+            var b = XmlHelper.GetModelObjectListByPath(filePath);
             //var T = XmlHelper.ConvertList<sbyte>(XmlHelper.Test(filePath));
             //Convert.ChangeType(b, List<classType>);
             //var c = b as IEnumerable();

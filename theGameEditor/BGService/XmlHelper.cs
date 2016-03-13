@@ -83,7 +83,7 @@ namespace BGService
             return retTList;
         }
 
-        public static XmlNodeList Test(string hostAddressXml)
+        public static XmlNodeList GetNodeListByPath(string hostAddressXml)
         {
             XmlDocument doc = new XmlDocument();
             doc.Load(hostAddressXml);
@@ -148,10 +148,18 @@ namespace BGService
             return string.Empty;
         }
 
-        public static T temp<T>(object obj, T tt)
+        public static object GetModelObjectListByPath(string filePath)
         {
-            //var a = tt.GetType();
-            return (T)obj;
+            var className = GetHostPath(filePath);
+            Type classType = GetModelOfpath(className);
+            if (classType == null)
+                return null;
+
+            MethodInfo method = typeof(XmlHelper).GetMethod("ConvertList");
+            var methodTemp = method.MakeGenericMethod(classType);
+            var tempP = new object[] { GetNodeListByPath(filePath) };
+            var ret  = methodTemp.Invoke(null, tempP);
+            return ret;
         }
     }
 }

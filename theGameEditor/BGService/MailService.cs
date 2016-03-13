@@ -40,7 +40,7 @@ namespace BGService
         /// <summary>
         /// httpGet请求
         /// </summary>
-        /// <param name="Url"></param>
+        /// <param name="Url">带http</param>
         /// <param name="postDataStr"></param>
         /// <returns></returns>
         public static string HttpGet(string Url, string postDataStr)
