@@ -28,11 +28,12 @@ namespace BGConsoleTest
             //var temp = XmlHelper.Test(filePath); 
             //var ret = XmlHelper.ConvertList<ItemUse>(temp);
 
-            var b = XmlHelper.GetModelObjectListByPath(filePath);
+            //var b = XmlHelper.GetModelObjectListByPath(filePath);
             //var T = XmlHelper.ConvertList<sbyte>(XmlHelper.Test(filePath));
             //Convert.ChangeType(b, List<classType>);
             //var c = b as IEnumerable();
             //var d = XmlHelper.temp<T>(b, classType.);
+            //var a = XmlHelper.temp("", 2);
             Console.ReadKey();
         }
     }

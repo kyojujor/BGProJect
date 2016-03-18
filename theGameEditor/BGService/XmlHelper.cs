@@ -148,18 +148,37 @@ namespace BGService
             return string.Empty;
         }
 
-        public static object GetModelObjectListByPath(string filePath)
+        public static List<T> GetModelObjectListByPath<T>(string filePath) where T :new () 
         {
             var className = GetHostPath(filePath);
             Type classType = GetModelOfpath(className);
             if (classType == null)
-                return null;
+                return default(List<T>);
 
             MethodInfo method = typeof(XmlHelper).GetMethod("ConvertList");
             var methodTemp = method.MakeGenericMethod(classType);
             var tempP = new object[] { GetNodeListByPath(filePath) };
             var ret  = methodTemp.Invoke(null, tempP);
-            return ret;
+            return ret as List<T>;
+        }
+
+        /// <summary>
+        /// 反射转换
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="xx"></param>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        public  static T RectionConvert<T>(T xx, object obj) where T : class
+        {
+            return obj as T;
+        }
+
+        public static T temp<T>(string name,T t)
+        {
+            var type = t.GetType();
+            object obj = type.Assembly.CreateInstance(name);
+            return (T)obj;
         }
     }
 }
