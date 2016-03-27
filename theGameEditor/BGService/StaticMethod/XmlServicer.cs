@@ -12,7 +12,7 @@ namespace BGService
         public static string GetStrValue(this XmlNode obj, string name)
         {
             if (obj.Attributes[name] == null)
-                return "";
+                return null;
 
             return obj.Attributes[name].Value;
         }
