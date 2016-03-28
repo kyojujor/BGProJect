@@ -20,12 +20,21 @@ namespace theGameEditor
         static readonly string pathTest = @"F:\服务端合集\resServer\ini\Item\ItemUse.xml";
         public DataEnity DataEnity { get; set; }
 
+        public List<Label> ItemFormLabelList { get; set; }
+
+        public List<TextBox> ItemFormTextBoxList { get; set; }
+
         public FormMain()
         {
             InitializeComponent();
-            backgroundWorkerFormMain = new BackgroundWorker();
-            backgroundWorkerFormMain.DoWork += TestDoWorkEvent;
-            backgroundWorkerFormMain.RunWorkerCompleted += new RunWorkerCompletedEventHandler(TestEvent);
+            #region 初始化控件集合
+            ItemFormLabelList = new List<Label>();
+            ItemFormTextBoxList = new List<TextBox>();
+
+            FindAllLabelAndTextBox(this.TabMainContorler);
+
+            #endregion
+
             DataEnity = new DataEnity();
             #region test 动态组件
             //todo 动态组件测试
@@ -37,14 +46,26 @@ namespace theGameEditor
             //dytext.TabIndex = 1;
             //dytext.Text = "2323";
             //tabCommonItem.Controls.Add(dytext);
+
+            //this.labelTextBox1.LabelText.Text = "客户端名字关联";
+            //this.labelTextBox1.LabelRelate.Text = "客户端名字关联";
+            //this.labelTextBox1.LabelText.Click += TestSelfConClick;
             #endregion
+
+            #region
+
+
+            #endregion
+
             DataEnity.ItemUseModel = XmlHelper.GetModelObjectListByPath<ItemUse>(pathTest);
-            Action<List<ItemUse>> tempMethod = ItemLabelBoxListInitation;
-            //ItemLabelBoxListInitation(DataEnity.ItemUseModel);
-            //tempMethod.BeginInvoke(DataEnity.ItemUseModel, null, null);
-            ItemListBox.DataSource = DataEnity.ItemUseModel;
-            ItemListBox.DisplayMember = "Desc";
-            Thread.Sleep(10);
+         
+            //ItemListBox.DataSource = DataEnity.ItemUseModel;
+            //ItemListBox.DisplayMember = "Desc";
+            ItemListBox.ListBoxBlindData(DataEnity.ItemUseModel, "Desc");
+
+            backgroundWorkerFormMain = new BackgroundWorker();
+            backgroundWorkerFormMain.DoWork += TestDoWorkEvent;
+            backgroundWorkerFormMain.RunWorkerCompleted += new RunWorkerCompletedEventHandler(TestEvent);
             backgroundWorkerFormMain.RunWorkerAsync("2323");
 
         }
@@ -101,6 +122,32 @@ namespace theGameEditor
             {
                 MessageBox.Show(ItemListBox.SelectedItem.ToString());
             }
+        }
+
+        public void FindAllLabelAndTextBox(TabControl tabControl)
+        {
+            if (tabControl==null || tabControl.Controls==null || tabControl.Controls.Count==0)
+            {
+                return;
+            }
+
+            foreach (var item in tabControl.Controls)
+            {
+                //this.Controls.cont
+                if (item is Label)
+                {
+                    ItemFormLabelList.Add((Label)item);
+                }
+                if (item is TextBox)
+                {
+                    ItemFormTextBoxList.Add((TextBox)item);
+                }
+            }
+        }
+
+        public void TestSelfConClick(object sender,EventArgs e)
+        {
+            MessageBox.Show("asdasdasd11");
         }
     }
 }

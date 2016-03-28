@@ -22,8 +22,10 @@ namespace BGService
 
          static XmlHelper()
         {
-            Assembly asm = Assembly.Load(AssemblyNameModel);
-            BgModelClassList = asm.GetTypes().ToList();
+            #region 获得程序集中所有类的list
+            //Assembly asm = Assembly.Load(AssemblyNameModel);
+            //BgModelClassList = asm.GetTypes().ToList();
+            #endregion
         }
         /// <summary>
         /// 反射xml文件，将类和文件一一对应
@@ -151,15 +153,21 @@ namespace BGService
         public static List<T> GetModelObjectListByPath<T>(string filePath) where T :new () 
         {
             var className = GetHostPath(filePath);
-            Type classType = GetModelOfpath(className);
+            //Type classType = GetModelOfpath(className);
+            Type classType = typeof(T);
             if (classType == null)
                 return default(List<T>);
 
-            MethodInfo method = typeof(XmlHelper).GetMethod("ConvertList");
-            var methodTemp = method.MakeGenericMethod(classType);
-            var tempP = new object[] { GetNodeListByPath(filePath) };
-            var ret  = methodTemp.Invoke(null, tempP);
-            return ret as List<T>;
+            #region 泛型方法的委托
+            //MethodInfo method = typeof(XmlHelper).GetMethod("ConvertList");
+            //var methodTemp = method.MakeGenericMethod(classType);
+            //var tempP = new object[] { GetNodeListByPath(filePath) };
+            //var ret = methodTemp.Invoke(null, tempP);
+            #endregion
+
+            var nodelist = GetNodeListByPath(filePath);
+            var ret = ConvertList<T>(nodelist);
+            return ret;
         }
 
         /// <summary>
