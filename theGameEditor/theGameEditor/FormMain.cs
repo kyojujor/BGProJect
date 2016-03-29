@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using BGService;
 using BGModel;
 using System.Threading;
+using CompositeControllerDemo;
 
 namespace theGameEditor
 {
@@ -17,23 +18,24 @@ namespace theGameEditor
     {
         private BackgroundWorker backgroundWorkerFormMain;
         //static readonly string pathTest =@"C:\game\blackGold\resServer\ini\Item\ItemUse.xml";
-        static readonly string pathTest = @"F:\服务端合集\resServer\ini\Item\ItemUse.xml";
+        static readonly string pathTest1 = @"F:\服务端合集\resServer\ini\Item\ItemUse.xml";
+        static readonly string pathTest2 = @"F:\服务端合集\resServer\ini\Item\Weapon.xml";
         public DataEnity DataEnity { get; set; }
 
-        public List<Label> ItemFormLabelList { get; set; }
-
-        public List<TextBox> ItemFormTextBoxList { get; set; }
+        public List<LabelTextBox> ItemFormLabelList { get; set; }
 
         public FormMain()
         {
             InitializeComponent();
             #region 初始化控件集合
-            ItemFormLabelList = new List<Label>();
-            ItemFormTextBoxList = new List<TextBox>();
+            ItemFormLabelList = new List<LabelTextBox>();
 
-            FindAllLabelAndTextBox(this.TabMainContorler);
+            FindAllLabelAndTextBox(this.tabCommonItem);
 
             #endregion
+
+            #region 
+            #endregion  
 
             DataEnity = new DataEnity();
             #region test 动态组件
@@ -57,11 +59,12 @@ namespace theGameEditor
 
             #endregion
 
-            DataEnity.ItemUseModel = XmlHelper.GetModelObjectListByPath<ItemUse>(pathTest);
-         
+            DataEnity.ItemUseModel = XmlHelper.GetModelObjectListByPath<ItemUse>(pathTest1);
+            DataEnity.ItemWeapon = XmlHelper.GetModelObjectListByPath<Weapon>(pathTest2);
+
             //ItemListBox.DataSource = DataEnity.ItemUseModel;
             //ItemListBox.DisplayMember = "Desc";
-            ItemListBox.ListBoxBlindData(DataEnity.ItemUseModel, "Desc");
+            ItemListBox.ListBoxBlindData(DataEnity.ItemWeapon, "Desc");
 
             backgroundWorkerFormMain = new BackgroundWorker();
             backgroundWorkerFormMain.DoWork += TestDoWorkEvent;
@@ -120,11 +123,16 @@ namespace theGameEditor
             ItemListBox.SelectedIndex = index;
             if (ItemListBox.SelectedIndex != -1)
             {
-                MessageBox.Show(ItemListBox.SelectedItem.ToString());
+                //MessageBox.Show(ItemListBox.SelectedItem.ToString());
+                BgService.ItemBlindToLabelTextBox(ItemFormLabelList, ItemListBox.SelectedItem);
             }
         }
 
-        public void FindAllLabelAndTextBox(TabControl tabControl)
+        /// <summary>
+        /// 找到所有的labelTextBox
+        /// </summary>
+        /// <param name="tabControl"></param>
+        public void FindAllLabelAndTextBox(TabPage tabControl)
         {
             if (tabControl==null || tabControl.Controls==null || tabControl.Controls.Count==0)
             {
@@ -134,20 +142,12 @@ namespace theGameEditor
             foreach (var item in tabControl.Controls)
             {
                 //this.Controls.cont
-                if (item is Label)
+                if (item is LabelTextBox)
                 {
-                    ItemFormLabelList.Add((Label)item);
-                }
-                if (item is TextBox)
-                {
-                    ItemFormTextBoxList.Add((TextBox)item);
+                    ItemFormLabelList.Add((LabelTextBox)item);
                 }
             }
-        }
-
-        public void TestSelfConClick(object sender,EventArgs e)
-        {
-            MessageBox.Show("asdasdasd11");
+            ItemFormLabelList = ItemFormLabelList.OrderBy(x => x.TabIndex).ToList();
         }
     }
 }

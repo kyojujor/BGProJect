@@ -12,8 +12,11 @@ namespace theGameEditor
         public DataEnity()
         {
             ItemUseModel = new List<ItemUse>();
+            ItemWeapon = new List<Weapon>();
         }
         
         public List<ItemUse> ItemUseModel { get; set; }
+
+        public List<Weapon> ItemWeapon { get; set; }
     }
 }

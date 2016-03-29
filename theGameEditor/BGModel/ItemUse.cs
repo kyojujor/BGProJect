@@ -7,7 +7,7 @@ using BGModel.CommonHelper;
 
 namespace BGModel
 {
-    public class ItemUse : Ibg_ItemBaseModel
+    public class ItemUse 
     {
         [Description("ID")]
         public string ID { get; set; }
