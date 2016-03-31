@@ -7,18 +7,20 @@ using BGModel.CommonHelper;
 
 namespace BGModel
 {
-    public class ItemUse 
+    public class ItemUse :bg_ItemBaseModel
     {
         [Description("ID")]
-        public string ID { get; set; }
+        public override string  ID { get; set; }
         [Description("名称ID")]
-        public string Name { get; set; }
+        public override string Name { get; set; }
+
+        [Description("名字关联说明")]
+        public override string Desc { get; set; }
+        [Description("描述关联说明")]
+        public override string Description { get; set; }
         [Description("")]
         public string TextureType { get; set; }
-        [Description("名字关联说明")]
-        public string Desc { get; set; }
-        [Description("描述关联说明")]
-        public string Description { get; set; }
+
         [Description("图片路径")]
         public string Photo { get; set; }
         [Description("")]

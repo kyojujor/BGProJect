@@ -18,8 +18,13 @@ namespace theGameEditor
     {
         private BackgroundWorker backgroundWorkerFormMain;
         //static readonly string pathTest =@"C:\game\blackGold\resServer\ini\Item\ItemUse.xml";
-        static readonly string pathTest1 = @"F:\服务端合集\resServer\ini\Item\ItemUse.xml";
-        static readonly string pathTest2 = @"F:\服务端合集\resServer\ini\Item\Weapon.xml";
+        //F:\study\GitHub\BG_ini\ini\Item\Equipment.xml
+        static readonly string path = @"F:\study\GitHub\BG_ini\ini\Item\";
+        //static readonly string pathDrop = @"F:\study\GitHub\BG_ini\ini\Drop\";
+        static readonly string pathTest1 = path +@"ItemUse.xml";
+        static readonly string pathTest2 = path + @"Weapon.xml";
+        static readonly string pathTest3 = path + @"Equipment.xml";
+        static readonly string pathTest4 = path + @"EnergyShield.xml";
         public DataEnity DataEnity { get; set; }
 
         public List<LabelTextBox> ItemFormLabelList { get; set; }
@@ -54,22 +59,34 @@ namespace theGameEditor
             //this.labelTextBox1.LabelText.Click += TestSelfConClick;
             #endregion
 
-            #region
 
-
-            #endregion
 
             DataEnity.ItemUseModel = XmlHelper.GetModelObjectListByPath<ItemUse>(pathTest1);
             DataEnity.ItemWeapon = XmlHelper.GetModelObjectListByPath<Weapon>(pathTest2);
+            DataEnity.ItemEquipment = XmlHelper.GetModelObjectListByPath<Equipment>(pathTest3);
+            DataEnity.ItemEnergyShield = XmlHelper.GetModelObjectListByPath<EnergyShield>(pathTest4);
+
+            //Task.Run<>()
+            WorldDrop = XmlHelper.GetModelObjectListByPath<World_Drop_Complex>(pathDropWorld);
+            TeamDrop = XmlHelper.GetModelObjectListByPath<Drop_Team>(pathDropTeam);
+            ItemDrop = XmlHelper.GetModelObjectListByPath<Drop_Item>(pathDropItem);
+
+            #region 掉落相关
+            this.DGVDrop_World.DataSource = new BindingList<World_Drop_Complex>(WorldDrop);
+            //this.DGVDrop_World.Columns[0].Name = "姓名";
+
+            //this.DGVDrop_World.disp
+            #endregion
+
 
             //ItemListBox.DataSource = DataEnity.ItemUseModel;
             //ItemListBox.DisplayMember = "Desc";
-            ItemListBox.ListBoxBlindData(DataEnity.ItemWeapon, "Desc");
+            ItemListBox.ListBoxBlindData(DataEnity.ItemWeapon, "Desc", ItemFormLabelList);
 
             backgroundWorkerFormMain = new BackgroundWorker();
-            backgroundWorkerFormMain.DoWork += TestDoWorkEvent;
-            backgroundWorkerFormMain.RunWorkerCompleted += new RunWorkerCompletedEventHandler(TestEvent);
-            backgroundWorkerFormMain.RunWorkerAsync("2323");
+            //backgroundWorkerFormMain.DoWork += TestDoWorkEvent;
+            //backgroundWorkerFormMain.RunWorkerCompleted += new RunWorkerCompletedEventHandler(TestEvent);
+            //backgroundWorkerFormMain.RunWorkerAsync("2323");
 
         }
 
@@ -112,11 +129,6 @@ namespace theGameEditor
             //ItemListBox.DisplayMember = "Desc";
         }
 
-        //private void button1_Click(object sender, EventArgs e)
-        //{
-        //    ItemLabelBoxListInitation(DataEnity.ItemUseModel);
-        //}
-
         private void ItemListBox_MouseClick(object sender, MouseEventArgs e)
         {
             int index = ItemListBox.IndexFromPoint(e.X, e.Y);
@@ -144,10 +156,95 @@ namespace theGameEditor
                 //this.Controls.cont
                 if (item is LabelTextBox)
                 {
-                    ItemFormLabelList.Add((LabelTextBox)item);
+                    var t = (LabelTextBox)item;
+                    t.textBoxContent.DoubleClick += TLB_Click;
+
+                    //ItemFormLabelList.Add((LabelTextBox)item);
+                    ItemFormLabelList.Add(t);
                 }
             }
             ItemFormLabelList = ItemFormLabelList.OrderBy(x => x.TabIndex).ToList();
+        }
+
+        private void btn_Item_Search_Click(object sender, EventArgs e)
+        {
+            var keyword = this.TB_Item_Search.Text.Trim();
+            if (string.IsNullOrWhiteSpace(keyword))
+                return;
+
+            var list = BgService.ItemSearch(keyword, DataEnity);
+            if (list != null && list.Count > 0)
+            {
+                ItemListBox.ListBoxBlindData(list, "Desc", ItemFormLabelList);
+            }
+            else {
+                ItemListBox.DataSource = null;
+            }
+
+        }
+
+        /// <summary>
+        /// 双击名称添加进富文本编辑框内
+        /// <Property ID='1623' ResultItem='JY_0006,1,1; S_Drug_003C,10,1' Count='2'/>
+        /// </summary>
+        private void TLB_Click(object sender, EventArgs e)
+        {
+            var itemCount = Convert.ToInt32(TB_ITEM_count.Text);
+            var tlb = (TextBox)sender;
+            var tx = tlb.Text;
+            if (tx.ToLower().Contains("drug"))
+            {
+                ResultItem += string.Format("{0},{1},1;", tx, 10);
+            }
+            else
+            {
+                ResultItem += string.Format("{0},{1},1;", tx, itemCount);
+            }
+            count += 1;
+           var temp=string.Format( "<Property ID='1623' ResultItem='{0}' Count='{1}'/>",ResultItem,count);
+            this.RTB_Item1.Text = temp.Replace('\'','"');
+            TB_ITEM_count.Text = "1";
+
+        }
+
+        public string ResultItem;
+        public int count;
+
+        /// <summary>
+        /// 清空按钮
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btn_richClear_Click(object sender, EventArgs e)
+        {
+            ResultItem = "";
+            count = 0;
+            this.RTB_Item1.Text = "";
+        }
+
+        /// <summary>
+        /// listboxItem重新绑定数据源后发生的事件
+        /// </summary>
+        [Obsolete("暂时废弃")]
+        private void ListBoxItemReBlindData(object sender,EventArgs e)
+        {
+            var listboxItem = (ListBox)sender;
+            if (listboxItem.DataSource!=null )
+            {
+                listboxItem.SelectedIndex = 0;
+                BgService.ItemBlindToLabelTextBox(ItemFormLabelList, listboxItem.SelectedItem);
+            }
+        }
+
+        private void button_ItemAddGold_Click(object sender, EventArgs e)
+        {
+            var itemCount = "50000";
+            var tx = "add_money_item0";
+            ResultItem += string.Format("{0},{1},1;", tx, itemCount);
+            count += 1;
+            var temp = string.Format("<Property ID='1623' ResultItem='{0}' Count='{1}'/>", ResultItem, count);
+            this.RTB_Item1.Text = temp.Replace('\'', '"');
+            TB_ITEM_count.Text = "1";
         }
     }
 }

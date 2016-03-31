@@ -53,7 +53,7 @@ namespace BGService
                     {
                         property.SetValue(retT, xmlNode.GetIntValue(property.Name)); //向retT的这个属性段加值
                     }
-                    else
+                    if(property.PropertyType == typeof(string))
                     {
                         property.SetValue(retT, xmlNode.GetStrValue(property.Name)); //向retT的这个属性段加值
                     }

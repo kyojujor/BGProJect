@@ -21,21 +21,30 @@ namespace BGModel
     /// 一切物品model的基类
     /// 第一批只包含装备 材料 武器 能量盾 宝箱 宠物
     /// </summary>
-    public interface Ibg_ItemBaseModel
+    public class bg_ItemBaseModel
     {
-         string ID { get; set; }
+        public bg_ItemBaseModel()
+        {
+            ID = "";
+            Desc = "";
+            Name = "";
+            Description = "";
+
+        }
+
+        public virtual string ID { get; set; }
 
         /// <summary>
         /// 描述
         /// </summary>
-         string Desc { get; set; }
+        public virtual string Desc { get; set; }
 
         /// <summary>
         /// 名字
         /// </summary>
-         string Name { get; set; }
+        public virtual string Name { get; set; }
 
-        string Description { get; set; }
+        public virtual string Description { get; set; }
 
     }
 
