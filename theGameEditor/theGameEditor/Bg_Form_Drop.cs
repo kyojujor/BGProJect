@@ -24,6 +24,8 @@ namespace theGameEditor
 
         public List<Drop_Item> ItemDrop { get; set; }
 
+        public List<FstTeamItem> world_TeamRelaList { get; set; }
+
         /// <summary>
         /// 双击事件
         /// 世界掉落
@@ -34,8 +36,16 @@ namespace theGameEditor
         {
             var dgv = (DataGridView)sender;
             var a =  dgv.CurrentRow.Cells;
-            var index = dgv.SelectedCells;
-            //ItemListBox.SelectedIndex = index;
+            var index = e.RowIndex;
+            var item = WorldDrop[index];
+
+            world_TeamRelaList = item.FstTeamItemList;
+            this.DGVDrop_Team.GirdViewBlindData(world_TeamRelaList);
+        }
+
+        private void DGVDrop_Team_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            var index = e.RowIndex;
         }
     }
 }

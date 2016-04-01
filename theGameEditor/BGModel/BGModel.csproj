@@ -41,7 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Bg_BaseModel.cs" />
-    <Compile Include="CommonHelper\AttributeHelper.cs" />
+    <Compile Include="CommonHelper\CommonHelper.cs" />
     <Compile Include="DataEnityModel.cs" />
     <Compile Include="Drop_Item.cs" />
     <Compile Include="Drop_Team.cs" />

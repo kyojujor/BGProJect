@@ -61,21 +61,22 @@ namespace theGameEditor
 
 
 
-            DataEnity.ItemUseModel = XmlHelper.GetModelObjectListByPath<ItemUse>(pathTest1);
-            DataEnity.ItemWeapon = XmlHelper.GetModelObjectListByPath<Weapon>(pathTest2);
-            DataEnity.ItemEquipment = XmlHelper.GetModelObjectListByPath<Equipment>(pathTest3);
-            DataEnity.ItemEnergyShield = XmlHelper.GetModelObjectListByPath<EnergyShield>(pathTest4);
+            //DataEnity.ItemUseModel = XmlHelper.GetModelObjectListByPath<ItemUse>(pathTest1);
+            //DataEnity.ItemWeapon = XmlHelper.GetModelObjectListByPath<Weapon>(pathTest2);
+            //DataEnity.ItemEquipment = XmlHelper.GetModelObjectListByPath<Equipment>(pathTest3);
+            //DataEnity.ItemEnergyShield = XmlHelper.GetModelObjectListByPath<EnergyShield>(pathTest4);
+
+            #region 掉落相关
 
             //Task.Run<>()
             WorldDrop = XmlHelper.GetModelObjectListByPath<World_Drop_Complex>(pathDropWorld);
             TeamDrop = XmlHelper.GetModelObjectListByPath<Drop_Team>(pathDropTeam);
             ItemDrop = XmlHelper.GetModelObjectListByPath<Drop_Item>(pathDropItem);
 
-            #region 掉落相关
-            this.DGVDrop_World.DataSource = new BindingList<World_Drop_Complex>(WorldDrop);
-            //this.DGVDrop_World.Columns[0].Name = "姓名";
-
-            //this.DGVDrop_World.disp
+            world_TeamRelaList = new List<FstTeamItem>();
+            this.TabMainContorler.SelectedTab = this.tabPage2;//debug 
+            DGVDrop_World.GirdViewBlindData(WorldDrop,true);
+            
             #endregion
 
 
@@ -246,5 +247,7 @@ namespace theGameEditor
             this.RTB_Item1.Text = temp.Replace('\'', '"');
             TB_ITEM_count.Text = "1";
         }
+
+
     }
 }

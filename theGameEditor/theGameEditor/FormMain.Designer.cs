@@ -80,10 +80,12 @@
             this.labelTextBox1 = new CompositeControllerDemo.LabelTextBox();
             this.ItemListBox = new System.Windows.Forms.ListBox();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.DGVDrop_Team = new System.Windows.Forms.DataGridView();
             this.DGVDrop_World = new System.Windows.Forms.DataGridView();
             this.TabMainContorler.SuspendLayout();
             this.tabCommonItem.SuspendLayout();
             this.tabPage2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.DGVDrop_Team)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.DGVDrop_World)).BeginInit();
             this.SuspendLayout();
             // 
@@ -603,6 +605,7 @@
             // 
             // tabPage2
             // 
+            this.tabPage2.Controls.Add(this.DGVDrop_Team);
             this.tabPage2.Controls.Add(this.DGVDrop_World);
             this.tabPage2.Location = new System.Drawing.Point(4, 44);
             this.tabPage2.Margin = new System.Windows.Forms.Padding(2);
@@ -613,14 +616,24 @@
             this.tabPage2.Text = "tabPage2";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
+            // DGVDrop_Team
+            // 
+            this.DGVDrop_Team.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.DGVDrop_Team.Location = new System.Drawing.Point(483, 22);
+            this.DGVDrop_Team.Name = "DGVDrop_Team";
+            this.DGVDrop_Team.RowTemplate.Height = 23;
+            this.DGVDrop_Team.Size = new System.Drawing.Size(358, 100);
+            this.DGVDrop_Team.TabIndex = 1;
+            this.DGVDrop_Team.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DGVDrop_Team_CellDoubleClick);
+            // 
             // DGVDrop_World
             // 
             this.DGVDrop_World.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.DGVDrop_World.Location = new System.Drawing.Point(30, 46);
+            this.DGVDrop_World.Location = new System.Drawing.Point(28, 22);
             this.DGVDrop_World.Name = "DGVDrop_World";
             this.DGVDrop_World.RowTemplate.Height = 23;
             this.DGVDrop_World.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.DGVDrop_World.Size = new System.Drawing.Size(436, 531);
+            this.DGVDrop_World.Size = new System.Drawing.Size(364, 531);
             this.DGVDrop_World.TabIndex = 0;
             this.DGVDrop_World.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DGVDrop_World_CellDoubleClick);
             // 
@@ -637,6 +650,7 @@
             this.tabCommonItem.ResumeLayout(false);
             this.tabCommonItem.PerformLayout();
             this.tabPage2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.DGVDrop_Team)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.DGVDrop_World)).EndInit();
             this.ResumeLayout(false);
 
@@ -697,6 +711,7 @@
         private System.Windows.Forms.DataGridView DGVDrop_World;
         private System.Windows.Forms.TextBox TB_ITEM_count;
         private System.Windows.Forms.Button button_ItemAddGold;
+        private System.Windows.Forms.DataGridView DGVDrop_Team;
     }
 }
 

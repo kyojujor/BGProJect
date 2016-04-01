@@ -8,12 +8,24 @@ namespace BGModel
 {
     public class Drop_Team
     {
+        private string _ItemTeamID;
 
         public int ID { get; set; }
         public string FstTeamID { get; set; }
         public string Name { get; set; }
 
-        public string ItemTeamID { get; set; }
+        public string ItemTeamID
+        {
+            get
+            {
+                return _ItemTeamID;
+            }
+            set
+            {
+                _ItemTeamID = value;
+                ItemTeamIList = new List<ItemTeamIModel>();
+            }
+        }
 
         public List<ItemTeamIModel> ItemTeamIList { get; set; }
     }
