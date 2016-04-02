@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using CompositeControllerDemo;
 using BGModel.CommonHelper;
 using BGModel;
+using System.Web;
 
 namespace BGService
 {
@@ -98,7 +99,6 @@ namespace BGService
             list.AddRange(SingleItemSearch(keyWord, equipmentList));
             list.AddRange(SingleItemSearch(keyWord, EnergyShieldList));
             return list;
-
         }
 
         public static List<bg_ItemBaseModel> SingleItemSearch(string keyWord, List<bg_ItemBaseModel> InModel)
@@ -110,5 +110,55 @@ namespace BGService
 
             return InModel.FindAll(x => x.ID.Contains(keyWord) || x.Name.Contains(keyWord) || x.Desc.Contains(keyWord) || x.Description.Contains(keyWord));
         }
+
+
+
+
     }
+
+    public class SplitHelper
+    {
+        public static void SplitDropStr<T>(string input, ref List<T> ret) where T : new()
+        {
+            var res = new List<T>();
+            if (!string.IsNullOrWhiteSpace(input))
+            {
+                var itemList = input.Split(new char[] { ';' }, StringSplitOptions.RemoveEmptyEntries).ToList();
+                if (itemList != null && itemList.Count > 0)
+                {
+                    foreach (var item in itemList)
+                    {
+                        var model = new T();
+                        var proplist = typeof(T).GetProperties().ToList();
+                        var list = item.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries).ToList();
+
+                        if (proplist.Count < list.Count)
+                            return;
+
+                        for (var i = 1; i < list.Count+1; i++)
+                        {
+                            //if (proplist[i].Name.ToLower() == "name")
+                            //{
+                            //    proplist[i].SetValue(model,name);
+                            //}
+                            //else
+                            {
+                                if (proplist[i].PropertyType == typeof(string))
+                                {
+                                    proplist[i].SetValue(model, list[i-1]);
+                                }
+                                if (proplist[i].PropertyType == typeof(int))
+                                {
+                                    proplist[i].SetValue(model, Convert.ToInt32(list[i-1]));
+                                }
+                            }
+                        }
+                        res.Add(model);
+                    }
+                    ret = res;
+                }
+            }
+        }
+    }
+
 }

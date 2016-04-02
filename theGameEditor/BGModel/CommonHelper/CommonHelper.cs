@@ -17,42 +17,42 @@ namespace BGModel.CommonHelper
         }
 
     }
-    public class SplitHelper
+
+    public class Bg_CommonHelper
     {
-        public static void splitDropStr<T>(string input, ref string outStr, ref List<T> ret) where T : new()
+
+
+        public static List<bg_ItemBaseModel> ItemQuery(string keyWord, DataEnity model)
         {
-            var res = new List<T>();
-            if (!string.IsNullOrWhiteSpace(input))
+            if (model == null)
             {
-                var itemList = input.Split(new char[] { ';' }, StringSplitOptions.RemoveEmptyEntries).ToList();
-                if (itemList != null && itemList.Count > 0)
-                {
-                    foreach (var item in itemList)
-                    {
-                        var model = new T();
-                        var proplist = typeof(T).GetProperties().ToList();
-                        var list = item.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries).ToList();
-
-                        if (proplist.Count != list.Count)
-                            return;
-
-                        for (var i = 0; i < list.Count; i++)
-                        {
-                            if (proplist[i].PropertyType == typeof(string))
-                            {
-                                proplist[i].SetValue(model, list[i]);
-                            }
-                            if (proplist[i].PropertyType == typeof(int))
-                            {
-                                proplist[i].SetValue(model, Convert.ToInt32(list[i]));
-                            }
-                        }
-                        res.Add(model);
-                    }
-                    outStr = input;
-                    ret = res;
-                }
+                throw new Exception("ItemSearch error Null");
             }
+
+            List<bg_ItemBaseModel> list = new List<bg_ItemBaseModel>();
+
+            //Func<List< bg_ItemBaseModel >,List
+
+            var itemUseList = model.ItemUseModel.Select(x => x as bg_ItemBaseModel).ToList();
+            var weaponList = model.ItemWeapon.Select(x => x as bg_ItemBaseModel).ToList();
+            var equipmentList = model.ItemEquipment.Select(x => x as bg_ItemBaseModel).ToList();
+            var EnergyShieldList = model.ItemEnergyShield.Select(x => x as bg_ItemBaseModel).ToList();
+
+            list.AddRange(SingleItemQuery(keyWord, itemUseList));
+            list.AddRange(SingleItemQuery(keyWord, weaponList));
+            list.AddRange(SingleItemQuery(keyWord, equipmentList));
+            list.AddRange(SingleItemQuery(keyWord, EnergyShieldList));
+            return list;
+        }
+
+        public static List<bg_ItemBaseModel> SingleItemQuery(string keyWord, List<bg_ItemBaseModel> InModel)
+        {
+            if (InModel == null || InModel.Count == 0 || string.IsNullOrWhiteSpace(keyWord))
+            {
+                return null;
+            }
+
+            return InModel.FindAll(x => x.ID.Contains(keyWord));
         }
     }
 

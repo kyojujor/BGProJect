@@ -19,13 +19,20 @@ namespace theGameEditor
         private BackgroundWorker backgroundWorkerFormMain;
         //static readonly string pathTest =@"C:\game\blackGold\resServer\ini\Item\ItemUse.xml";
         //F:\study\GitHub\BG_ini\ini\Item\Equipment.xml
-        static readonly string path = @"F:\study\GitHub\BG_ini\ini\Item\";
+        static readonly string path = @"C:\学习\gitHub-kyo\BG_ini\ini\";
+        static readonly string pathItem = path + @"Item\";
         //static readonly string pathDrop = @"F:\study\GitHub\BG_ini\ini\Drop\";
-        static readonly string pathTest1 = path +@"ItemUse.xml";
-        static readonly string pathTest2 = path + @"Weapon.xml";
-        static readonly string pathTest3 = path + @"Equipment.xml";
-        static readonly string pathTest4 = path + @"EnergyShield.xml";
-        public DataEnity DataEnity { get; set; }
+        static readonly string pathTest1 = pathItem + @"ItemUse.xml";
+        static readonly string pathTest2 = pathItem + @"Weapon.xml";
+        static readonly string pathTest3 = pathItem + @"Equipment.xml";
+        static readonly string pathTest4 = pathItem + @"EnergyShield.xml";
+
+        static readonly string pathDrop = path + @"Drop\";
+        static readonly string pathDropWorld = pathDrop + @"World_Drop_Complex.xml";
+        static readonly string pathDropTeam = pathDrop + @"Drop_Team.xml";
+        static readonly string pathDropItem = pathDrop + @"Drop_Item.xml";
+
+        public static DataEnity DataEnity { get; set; }
 
         public List<LabelTextBox> ItemFormLabelList { get; set; }
 
@@ -61,22 +68,28 @@ namespace theGameEditor
 
 
 
-            //DataEnity.ItemUseModel = XmlHelper.GetModelObjectListByPath<ItemUse>(pathTest1);
-            //DataEnity.ItemWeapon = XmlHelper.GetModelObjectListByPath<Weapon>(pathTest2);
-            //DataEnity.ItemEquipment = XmlHelper.GetModelObjectListByPath<Equipment>(pathTest3);
-            //DataEnity.ItemEnergyShield = XmlHelper.GetModelObjectListByPath<EnergyShield>(pathTest4);
+            DataEnity.ItemUseModel = XmlHelper.GetModelObjectListByPath<ItemUse>(pathTest1);
+            DataEnity.ItemWeapon = XmlHelper.GetModelObjectListByPath<Weapon>(pathTest2);
+            DataEnity.ItemEquipment = XmlHelper.GetModelObjectListByPath<Equipment>(pathTest3);
+            DataEnity.ItemEnergyShield = XmlHelper.GetModelObjectListByPath<EnergyShield>(pathTest4);
 
             #region 掉落相关
 
-            //Task.Run<>()
-            WorldDrop = XmlHelper.GetModelObjectListByPath<World_Drop_Complex>(pathDropWorld);
+            WorldShowData = new List<Drop_TeamByWorld>();
+            TeamShowData = new List<Drop_ItemByTeam>();
+            ItemShowData = new List<Drop_ItemByModel>();
+
+           //BgService.WorldDropDea(WorldDrop, TeamDrop, pathDropWorld);
+           WorldDrop = XmlHelper.GetModelObjectListByPath<World_Drop_Complex>(pathDropWorld);
             TeamDrop = XmlHelper.GetModelObjectListByPath<Drop_Team>(pathDropTeam);
             ItemDrop = XmlHelper.GetModelObjectListByPath<Drop_Item>(pathDropItem);
 
-            world_TeamRelaList = new List<FstTeamItem>();
+            //world_TeamRelaList = new List<FstTeamItem>();
             this.TabMainContorler.SelectedTab = this.tabPage2;//debug 
-            DGVDrop_World.GirdViewBlindData(WorldDrop,true);
-            
+            DGVDrop_World.GirdViewBlindData(WorldDrop, true);
+
+            //DGV_Team.GirdViewBlindData(TeamDrop, true);
+
             #endregion
 
 
@@ -147,7 +160,7 @@ namespace theGameEditor
         /// <param name="tabControl"></param>
         public void FindAllLabelAndTextBox(TabPage tabControl)
         {
-            if (tabControl==null || tabControl.Controls==null || tabControl.Controls.Count==0)
+            if (tabControl == null || tabControl.Controls == null || tabControl.Controls.Count == 0)
             {
                 return;
             }
@@ -202,8 +215,8 @@ namespace theGameEditor
                 ResultItem += string.Format("{0},{1},1;", tx, itemCount);
             }
             count += 1;
-           var temp=string.Format( "<Property ID='1623' ResultItem='{0}' Count='{1}'/>",ResultItem,count);
-            this.RTB_Item1.Text = temp.Replace('\'','"');
+            var temp = string.Format("<Property ID='1623' ResultItem='{0}' Count='{1}'/>", ResultItem, count);
+            this.RTB_Item1.Text = temp.Replace('\'', '"');
             TB_ITEM_count.Text = "1";
 
         }
@@ -227,10 +240,10 @@ namespace theGameEditor
         /// listboxItem重新绑定数据源后发生的事件
         /// </summary>
         [Obsolete("暂时废弃")]
-        private void ListBoxItemReBlindData(object sender,EventArgs e)
+        private void ListBoxItemReBlindData(object sender, EventArgs e)
         {
             var listboxItem = (ListBox)sender;
-            if (listboxItem.DataSource!=null )
+            if (listboxItem.DataSource != null)
             {
                 listboxItem.SelectedIndex = 0;
                 BgService.ItemBlindToLabelTextBox(ItemFormLabelList, listboxItem.SelectedItem);

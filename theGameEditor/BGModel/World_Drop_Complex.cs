@@ -9,64 +9,40 @@ namespace BGModel
 {
     public class World_Drop_Complex
     {
-        private string _FstTeamID = "";
+        public World_Drop_Complex()
+        {
+            //Drop_TeamList = new List<Drop_TeamByWorld>();
+        }
 
          public int ID { get; set; }
 
+        /// <summary>
+        /// key
+        /// </summary>
         public string PackageID { get; set; }
 
         public string Name { get; set; }
 
-        public string FstTeamID
-        {
-            get
-            {
-                return _FstTeamID;
-            }
-            set
-            {
-                //_FstTeamID = value;
-                //FstTeamItemList = new List<FstTeamItem>();
-                //if (!string.IsNullOrWhiteSpace(_FstTeamID))
-                //{
-                //    var itemList = _FstTeamID.Split(new char[] { ';' }, StringSplitOptions.RemoveEmptyEntries).ToList();
-                //    if (itemList != null && itemList.Count > 0)
-                //    {
-                //        foreach (var item in itemList)
-                //        {
-                //            var model = new FstTeamItem();
-                //            var list = item.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries).ToList();
-                //            if (list.Count==3)
-                //            {
-                //                model.TeamID = list[0];
-                //                model.MinDropCount = Convert.ToInt32(list[1]);
-                //                model.MaxDropCount = Convert.ToInt32(list[2]);
-                //                FstTeamItemList.Add(model);
-                //            }
-                //        }
-                //    }
-                //}
-                SplitHelper.splitDropStr(value, ref this. _FstTeamID, ref _FstTeamItemList);
-            }
+        /// <summary>
+        /// child
+        /// </summary>
+        public string FstTeamID {
+            get;set;
         }
 
-        private List<FstTeamItem> _FstTeamItemList;
-        public List<FstTeamItem> FstTeamItemList
-        {
-            get
-            {
-                return _FstTeamItemList;
-            }
-        }
+        //public List<Drop_TeamByWorld> Drop_TeamList { get; set; }
     }
 
-    public class FstTeamItem
+    public class Drop_TeamByWorld
     {
-        public string TeamID { get; set; }
 
-        public int MinDropCount { get; set; }
+        public string Name { get; set; }
+        public string TeamId { get; set; }
 
-        public int MaxDropCount { get; set; }
-    }
+
+        public int MinCount { get; set; }
+
+        public int MaxCount { get; set; }
+    } 
 
 }

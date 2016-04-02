@@ -3,41 +3,54 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using BGModel.CommonHelper;
 
 namespace BGModel
 {
     public class Drop_Team
     {
-        private string _ItemTeamID;
+        public Drop_Team()
+        {
+            //Drop_ItemList = new List<Drop_ItemByTeam>();
+        }
 
         public int ID { get; set; }
+        /// <summary>
+        /// key
+        /// </summary>
         public string FstTeamID { get; set; }
         public string Name { get; set; }
 
+        /// <summary>
+        /// child
+        /// </summary>
         public string ItemTeamID
         {
-            get
-            {
-                return _ItemTeamID;
-            }
-            set
-            {
-                _ItemTeamID = value;
-                ItemTeamIList = new List<ItemTeamIModel>();
-            }
+            get;set;
         }
 
-        public List<ItemTeamIModel> ItemTeamIList { get; set; }
+        //public List<Drop_ItemByTeam> Drop_ItemList { get; set; }
     }
 
-    public class ItemTeamIModel
+    public class Drop_ItemByTeam
     {
-        public string ItemID { get; set; }
-        public int DropCount { get; set; }
-        public int TotalCount { get; set; }
+
+        public string Name { get; set; }
+
+        public string ItemTeamID { get; set; }
         /// <summary>
-        /// 概率
+        /// 出几种
         /// </summary>
-        public int Change { get; set; }
+        public string OutCount { get; set; }
+
+        /// <summary>
+        /// 总共几种
+        /// </summary>
+        public string TotalCount { get; set; }
+
+        /// <summary>
+        /// 几率
+        /// </summary>
+        public string Change { get; set; }
     }
 }

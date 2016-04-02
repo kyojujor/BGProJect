@@ -47,7 +47,7 @@ namespace BGService
                 var dropCount = con.ColumnCount;
                 if (dropCount > 0 && hideLastColumn)
                     con.Columns[dropCount - 1].Visible = false;
-                con.AutoSizeColumn();
+                //con.AutoSizeColumn();
             }
         }
 
