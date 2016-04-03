@@ -43,7 +43,11 @@ namespace theGameEditor
             {
                 foreach (var sk in _WorldShowData)
                 {
-                    sk.Name = TeamDrop.Find(x => x.FstTeamID == sk.TeamId).Name;
+                    var temp = TeamDrop.Find(x => x.FstTeamID == sk.TeamId);
+                    if (temp!=null)
+                    {
+                        sk.Name = temp.Name;
+                    }
                 }
             }
             DGVDrop_Team.GirdViewBlindData(WorldShowData);

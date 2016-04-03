@@ -16,10 +16,12 @@ namespace BGModel
             ItemEnergyShield = new List<EnergyShield>();
         }
 
-        public List<ItemUse> ItemUseModel { get; set; }
+        private List<ItemUse> _ItemUseModel;
+        public List<ItemUse> ItemUseModel { get { return _ItemUseModel; } set { _ItemUseModel = value; } }
 
-        public List<Weapon> ItemWeapon { get; set; }
-
+        private List<Weapon> _ItemWeapon;
+        public List<Weapon> ItemWeapon { get { return _ItemWeapon; } set { _ItemWeapon = value; } }
+          
         public List<Equipment> ItemEquipment { get; set; }
 
         public List<EnergyShield> ItemEnergyShield { get; set; }

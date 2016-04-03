@@ -32,7 +32,9 @@ namespace theGameEditor
         static readonly string pathDropTeam = pathDrop + @"Drop_Team.xml";
         static readonly string pathDropItem = pathDrop + @"Drop_Item.xml";
 
-        public static DataEnity DataEnity { get; set; }
+        private static DataEnity _DataEnity;
+        public static DataEnity DataEnity { get { return _DataEnity; } set { _DataEnity = value; } }
+        public static List<bg_ItemBaseModel> DataModelList { get; set; }
 
         public List<LabelTextBox> ItemFormLabelList { get; set; }
 
@@ -68,7 +70,10 @@ namespace theGameEditor
 
 
 
-            DataEnity.ItemUseModel = XmlHelper.GetModelObjectListByPath<ItemUse>(pathTest1);
+            //DataEnity.ItemUseModel = XmlHelper.GetModelObjectListByPath<ItemUse>(pathTest1);
+
+            InitateItemModel<ItemUse>(pathTest1, ref _DataEnity);
+
             DataEnity.ItemWeapon = XmlHelper.GetModelObjectListByPath<Weapon>(pathTest2);
             DataEnity.ItemEquipment = XmlHelper.GetModelObjectListByPath<Equipment>(pathTest3);
             DataEnity.ItemEnergyShield = XmlHelper.GetModelObjectListByPath<EnergyShield>(pathTest4);
@@ -261,6 +266,29 @@ namespace theGameEditor
             TB_ITEM_count.Text = "1";
         }
 
+        #region 初始的异步
+
+        public void InitateItemModel<T>(string path,ref DataEnity data)  where T :new()
+        {
+            if (data == null)
+            {
+                return;
+            }
+
+            var  dataItem = XmlHelper.GetModelObjectListByPath<T>(path);
+            var propDataList = data.GetType().GetProperties();
+            foreach (var propItem in propDataList)
+            {
+                if (propItem.PropertyType == typeof(List<T>))
+                {
+                    propItem.SetValue(data, dataItem);
+                    break;
+                }
+            }
+
+        }
+
+        #endregion
 
     }
 }
