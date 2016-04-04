@@ -48,8 +48,11 @@
     <Compile Include="Drop_Team.cs" />
     <Compile Include="EnergyShield.cs" />
     <Compile Include="Equipment.cs" />
+    <Compile Include="ItemMountUse.cs" />
     <Compile Include="ItemUse.cs" />
+    <Compile Include="Material.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Rune.cs" />
     <Compile Include="Weapon.cs" />
     <Compile Include="World_Drop_Complex.cs" />
   </ItemGroup>

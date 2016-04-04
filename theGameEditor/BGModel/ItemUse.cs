@@ -25,8 +25,12 @@ namespace BGModel
         public string Photo { get; set; }
         [Description("")]
         public string BindStatus { get; set; }
+        [Description("开启时间")]
+        public string LeadTime { get; set; }
         [Description("")]
         public string AddRePoint { get; set; }
+        [Description("限制条件")]
+        public string LimitedPack { get; set; }
         [Description("")]
         public string script { get; set; }
         [Description("")]

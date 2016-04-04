@@ -8,16 +8,20 @@ using BGService;
 using BGModel;
 using System.Threading;
 using CompositeControllerDemo;
+using System.ComponentModel;
 
 namespace theGameEditor
 {
     public partial class FormMain : Form
     {
-       
 
+        #region    元数据
         public List<World_Drop_Complex> WorldDrop { get; set; }
         public List<Drop_Team> TeamDrop { get; set; }
         public List<Drop_Item> ItemDrop { get; set; }
+        #endregion
+
+        public List<World_Drop_Complex> dropSearchList { get; set; }
 
         private List<Drop_TeamByWorld> _WorldShowData;
         public List<Drop_TeamByWorld> WorldShowData { get { return _WorldShowData; } set { _WorldShowData = value; } }
@@ -29,22 +33,36 @@ namespace theGameEditor
         /// <summary>
         /// 双击事件
         /// 世界掉落
+        /// 1
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void DGVDrop_World_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
+            DGV_Team.DataSource = null;
+            DGV_Item.DataSource = null;
+
             var dgv = (DataGridView)sender;
-            //var a =  dgv.CurrentRow.Cells;
+            //var tempSource = new List<World_Drop_Complex>();
+            var BindingSource = (IList<World_Drop_Complex>)dgv.DataSource;
+            if (BindingSource == null || BindingSource.Count == 0)
+            {
+                return;
+            }
+
+
             var index = e.RowIndex;
-            var item = WorldDrop[index];
+
+            if (index < 0 || index >= BindingSource.Count)
+                return;
+            var item = BindingSource[index];
             SplitHelper.SplitDropStr(item.FstTeamID, ref _WorldShowData);
-            if (_WorldShowData!=null && _WorldShowData.Count>0)
+            if (_WorldShowData != null || _WorldShowData.Count > 0)
             {
                 foreach (var sk in _WorldShowData)
                 {
                     var temp = TeamDrop.Find(x => x.FstTeamID == sk.TeamId);
-                    if (temp!=null)
+                    if (temp != null)
                     {
                         sk.Name = temp.Name;
                     }
@@ -53,36 +71,77 @@ namespace theGameEditor
             DGVDrop_Team.GirdViewBlindData(WorldShowData);
         }
 
+        /// <summary>
+        ///  dgv2
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void DGVDrop_Team_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
+            DGV_Item.DataSource = null;
+
             var dgv = (DataGridView)sender;
             var index = e.RowIndex;
-            var item = WorldShowData[index];
-            SplitHelper.SplitDropStr(TeamDrop.Find(x => x.FstTeamID ==item.TeamId).ItemTeamID , ref _TeamShowData);
+            var tempSource = (IList<Drop_TeamByWorld>)dgv.DataSource;
+            if (tempSource==null||index < 0 || index >= tempSource.Count)
+                return;
+
+            var item = tempSource[index];
+            SplitHelper.SplitDropStr(TeamDrop.Find(x => x.FstTeamID == item.TeamId).ItemTeamID, ref _TeamShowData);
             if (_TeamShowData != null && _TeamShowData.Count > 0)
             {
                 foreach (var sk in _TeamShowData)
                 {
-                    sk.Name = ItemDrop.Find(x => x.ItemTeamID == sk.ItemTeamID).TeamName;
+                    var tm = ItemDrop.Find(x => x.ItemTeamID == sk.ItemTeamID);
+                    if(tm!=null)
+                    sk.Name = tm.TeamName;
                 }
             }
             DGV_Team.GirdViewBlindData(TeamShowData);
         }
 
+        /// <summary>
+        /// dGV3
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void DGV_Team_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
             var dgv = (DataGridView)sender;
             var index = e.RowIndex;
-            var item = TeamShowData[index];
+
+            var tempSource = (IList<Drop_ItemByTeam>)dgv.DataSource;
+            if (tempSource == null || index < 0 || index >= tempSource.Count)
+                return;
+
+            var item = tempSource[index];
             SplitHelper.SplitDropStr(ItemDrop.Find(x => x.ItemTeamID == item.ItemTeamID).ItemID, ref _ItemShowData);
             if (_ItemShowData != null && _ItemShowData.Count > 0)
             {
-                //foreach (var sk in _ItemShowData)
-                //{
-                //    sk.Name = ItemDrop.Find(x => x.ItemTeamID == sk.ItemTeamID).TeamName;
-                //}
+                foreach (var sk in _ItemShowData)
+                {
+                    var temp = BGService.BgService.ItemSearch(sk.ItemUseID, DataModelList, true).FirstOrDefault();
+                    if (temp != null)
+                        sk.Name = temp.Desc;
+                }
             }
             DGV_Item.GirdViewBlindData(ItemShowData);
+        }
+
+        /// <summary>
+        /// drop1 搜索接口
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btn_DropSearch_Click(object sender, EventArgs e)
+        {
+            var text = TB_DropWSearch.Text.Trim();
+            if (string.IsNullOrWhiteSpace(text))
+            {
+                return;
+            }
+            dropSearchList = WorldDrop.FindAll(x => x.Name.Contains(text) || x.PackageID.Contains(text));
+            DGVDrop_World.GirdViewBlindData(dropSearchList);
         }
     }
 }

@@ -26,6 +26,9 @@ namespace theGameEditor
         static readonly string pathTest2 = pathItem + @"Weapon.xml";
         static readonly string pathTest3 = pathItem + @"Equipment.xml";
         static readonly string pathTest4 = pathItem + @"EnergyShield.xml";
+        static readonly string pathTest5 = pathItem + @"Rune.xml";
+        static readonly string pathTest6 = pathItem + @"Material.xml";
+        static readonly string pathTest7 = pathItem + @"ItemMountUse.xml";
 
         static readonly string pathDrop = path + @"Drop\";
         static readonly string pathDropWorld = pathDrop + @"World_Drop_Complex.xml";
@@ -34,6 +37,9 @@ namespace theGameEditor
 
         private static DataEnity _DataEnity;
         public static DataEnity DataEnity { get { return _DataEnity; } set { _DataEnity = value; } }
+        /// <summary>
+        /// 存放所有物品实体
+        /// </summary>
         public static List<bg_ItemBaseModel> DataModelList { get; set; }
 
         public List<LabelTextBox> ItemFormLabelList { get; set; }
@@ -43,8 +49,8 @@ namespace theGameEditor
             InitializeComponent();
             #region 初始化控件集合
             ItemFormLabelList = new List<LabelTextBox>();
-
-            FindAllLabelAndTextBox(this.tabCommonItem);
+            DataModelList = new List<bg_ItemBaseModel>();
+            //FindAllLabelAndTextBox(this.tabCommonItem);
 
             #endregion
 
@@ -68,15 +74,22 @@ namespace theGameEditor
             //this.labelTextBox1.LabelText.Click += TestSelfConClick;
             #endregion
 
+            Task.Run(() => { InitateItemModel<ItemUse>(pathTest1, ref _DataEnity); });
+            Task.Run(() => { InitateItemModel<Weapon>(pathTest2, ref _DataEnity); });
+            Task.Run(() => { InitateItemModel<Equipment>(pathTest3, ref _DataEnity); });
+            Task.Run(() => { InitateItemModel<EnergyShield>(pathTest4, ref _DataEnity); });
+            Task.Run(() => { InitateItemModel<Rune>(pathTest5, ref _DataEnity); });
+            Task.Run(() => { InitateItemModel<Material>(pathTest6, ref _DataEnity); });
+            Task.Run(() => { InitateItemModel<ItemMountUse>(pathTest7, ref _DataEnity); });
+            //InitateItemModel<ItemUse>(pathTest1, ref _DataEnity);
+            //InitateItemModel<Weapon>(pathTest2, ref _DataEnity);
+            //InitateItemModel<Equipment>(pathTest3, ref _DataEnity);
+            //InitateItemModel<EnergyShield>(pathTest4, ref _DataEnity);
 
 
-            //DataEnity.ItemUseModel = XmlHelper.GetModelObjectListByPath<ItemUse>(pathTest1);
-
-            InitateItemModel<ItemUse>(pathTest1, ref _DataEnity);
-
-            DataEnity.ItemWeapon = XmlHelper.GetModelObjectListByPath<Weapon>(pathTest2);
-            DataEnity.ItemEquipment = XmlHelper.GetModelObjectListByPath<Equipment>(pathTest3);
-            DataEnity.ItemEnergyShield = XmlHelper.GetModelObjectListByPath<EnergyShield>(pathTest4);
+            //DataEnity.ItemWeapon = XmlHelper.GetModelObjectListByPath<Weapon>(pathTest2);
+            //DataEnity.ItemEquipment = XmlHelper.GetModelObjectListByPath<Equipment>(pathTest3);
+            //DataEnity.ItemEnergyShield = XmlHelper.GetModelObjectListByPath<EnergyShield>(pathTest4);
 
             #region 掉落相关
 
@@ -84,13 +97,18 @@ namespace theGameEditor
             TeamShowData = new List<Drop_ItemByTeam>();
             ItemShowData = new List<Drop_ItemByModel>();
 
-           //BgService.WorldDropDea(WorldDrop, TeamDrop, pathDropWorld);
-           WorldDrop = XmlHelper.GetModelObjectListByPath<World_Drop_Complex>(pathDropWorld);
+            //BgService.WorldDropDea(WorldDrop, TeamDrop, pathDropWorld);
+            dropSearchList = new List<World_Drop_Complex>();
+
+            //Task.Run(() => { WorldDrop = XmlHelper.GetModelObjectListByPath<World_Drop_Complex>(pathDropWorld); });
+            //Task.Run(() => { WorldDrop = XmlHelper.GetModelObjectListByPath<World_Drop_Complex>(pathDropWorld); });
+
+            WorldDrop = XmlHelper.GetModelObjectListByPath<World_Drop_Complex>(pathDropWorld);
             TeamDrop = XmlHelper.GetModelObjectListByPath<Drop_Team>(pathDropTeam);
             ItemDrop = XmlHelper.GetModelObjectListByPath<Drop_Item>(pathDropItem);
 
             //world_TeamRelaList = new List<FstTeamItem>();
-            this.TabMainContorler.SelectedTab = this.tabPage2;//debug 
+            //this.TabMainContorler.SelectedTab = this.TabDrop;//debug 
             DGVDrop_World.GirdViewBlindData(WorldDrop, true);
 
             //DGV_Team.GirdViewBlindData(TeamDrop, true);
@@ -100,7 +118,14 @@ namespace theGameEditor
 
             //ItemListBox.DataSource = DataEnity.ItemUseModel;
             //ItemListBox.DisplayMember = "Desc";
-            ItemListBox.ListBoxBlindData(DataEnity.ItemWeapon, "Desc", ItemFormLabelList);
+
+            Task.Run(() =>
+            {
+                FindAllLabelAndTextBox(this.tabCommonItem);
+                ItemListBox.ListBoxBlindData(DataModelList, "Desc", ItemFormLabelList);
+            });
+
+
 
             backgroundWorkerFormMain = new BackgroundWorker();
             //backgroundWorkerFormMain.DoWork += TestDoWorkEvent;
@@ -191,7 +216,7 @@ namespace theGameEditor
             if (string.IsNullOrWhiteSpace(keyword))
                 return;
 
-            var list = BgService.ItemSearch(keyword, DataEnity);
+            var list = BgService.ItemSearch(keyword, DataModelList);
             if (list != null && list.Count > 0)
             {
                 ItemListBox.ListBoxBlindData(list, "Desc", ItemFormLabelList);
@@ -211,19 +236,19 @@ namespace theGameEditor
             var itemCount = Convert.ToInt32(TB_ITEM_count.Text);
             var tlb = (TextBox)sender;
             var tx = tlb.Text;
-            if (tx.ToLower().Contains("drug"))
+            //if (tx.ToLower().Contains("drug"))
+            //{
+            //    ResultItem += string.Format("{0},{1},1;", tx, 10);
+            //}
+            //else
             {
-                ResultItem += string.Format("{0},{1},1;", tx, 10);
-            }
-            else
-            {
-                ResultItem += string.Format("{0},{1},1;", tx, itemCount);
+                ResultItem += string.Format("{0},{1};", tx, itemCount);
             }
             count += 1;
-            var temp = string.Format("<Property ID='1623' ResultItem='{0}' Count='{1}'/>", ResultItem, count);
+            var temp = string.Format("<Property ID='{2}' ItemTeamID='' TeamName='' ItemID='{0}' Count='{1}'/>", ResultItem, count,tb_idt.Text);
             this.RTB_Item1.Text = temp.Replace('\'', '"');
             TB_ITEM_count.Text = "1";
-
+            //tb_idt.Text = (int.Parse(tb_idt.Text) + 1).ToString();
         }
 
         public string ResultItem;
@@ -239,6 +264,8 @@ namespace theGameEditor
             ResultItem = "";
             count = 0;
             this.RTB_Item1.Text = "";
+
+            tb_idt.Text = (int.Parse(tb_idt.Text) + 1).ToString();
         }
 
         /// <summary>
@@ -258,24 +285,26 @@ namespace theGameEditor
         private void button_ItemAddGold_Click(object sender, EventArgs e)
         {
             var itemCount = "50000";
+
+            var id = int.Parse(tb_idt.Text);
             var tx = "add_money_item0";
             ResultItem += string.Format("{0},{1},1;", tx, itemCount);
             count += 1;
-            var temp = string.Format("<Property ID='1623' ResultItem='{0}' Count='{1}'/>", ResultItem, count);
+            var temp = string.Format("<Property ID='{2}' ResultItem='{0}' Count='{1}'/>", ResultItem, count,id);
             this.RTB_Item1.Text = temp.Replace('\'', '"');
             TB_ITEM_count.Text = "1";
         }
 
         #region 初始的异步
 
-        public void InitateItemModel<T>(string path,ref DataEnity data)  where T :new()
+        public void InitateItemModel<T>(string path, ref DataEnity data) where T : new()
         {
             if (data == null)
             {
                 return;
             }
 
-            var  dataItem = XmlHelper.GetModelObjectListByPath<T>(path);
+            var dataItem = XmlHelper.GetModelObjectListByPath<T>(path);
             var propDataList = data.GetType().GetProperties();
             foreach (var propItem in propDataList)
             {
@@ -286,9 +315,26 @@ namespace theGameEditor
                 }
             }
 
+            var tem = new T() as bg_ItemBaseModel;
+            if (tem != null)
+            {
+                var baseItem = dataItem.Select(x => x as bg_ItemBaseModel).ToList();
+                lock (DataModelList)
+                {
+                    DataModelList.AddRange(baseItem);
+                }
+            }
         }
 
         #endregion
 
+        private void SelectTabIndex(int index)
+        {
+            var diction = new Dictionary<int,TabPage>();
+            diction.Add(0, tabCommonItem);
+            diction.Add(1, TabDrop);
+           if(diction.ContainsKey(index))
+            this.TabMainContorler.SelectedTab = diction[index];
+        }
     }
 }

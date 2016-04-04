@@ -43,6 +43,7 @@ namespace BGService
             {
                 if (i < PropList.Count)//还未超出Model 的属性值个数
                 {
+                    //backgroundWorkerFormMain.RunWorkerCompleted+=
                     ControllerList[i].Visible = true;
                     var text = PropList[i].GetValue(itemModel, null);
                     if (text == null)
@@ -78,43 +79,41 @@ namespace BGService
         /// <summary>
         /// 根据
         /// </summary>
-        public static List<bg_ItemBaseModel> ItemSearch(string keyWord, DataEnity model)
+        public static List<bg_ItemBaseModel> ItemSearch(string keyWord, List<bg_ItemBaseModel> model, bool isQuery = false)
         {
+            keyWord = keyWord.Trim();
             if (model==null)
             {
                 throw new Exception("ItemSearch error Null");
             }
 
             List<bg_ItemBaseModel> list = new List<bg_ItemBaseModel>();
-
-            //Func<List< bg_ItemBaseModel >,List
-
-            var itemUseList = model.ItemUseModel.Select(x => x as bg_ItemBaseModel).ToList();
-            var weaponList = model.ItemWeapon.Select(x => x as bg_ItemBaseModel).ToList();
-            var equipmentList = model.ItemEquipment.Select(x => x as bg_ItemBaseModel).ToList();
-            var EnergyShieldList = model.ItemEnergyShield.Select(x => x as bg_ItemBaseModel).ToList();
-
-            list.AddRange(SingleItemSearch(keyWord, itemUseList));
-            list.AddRange(SingleItemSearch(keyWord, weaponList));
-            list.AddRange(SingleItemSearch(keyWord, equipmentList));
-            list.AddRange(SingleItemSearch(keyWord, EnergyShieldList));
+            list.AddRange(SingleItemSearch(keyWord, model, isQuery));
+           
             return list;
         }
 
-        public static List<bg_ItemBaseModel> SingleItemSearch(string keyWord, List<bg_ItemBaseModel> InModel)
+        public static List<bg_ItemBaseModel> SingleItemSearch(string keyWord, List<bg_ItemBaseModel> InModel,bool isQuery)
         {
             if (InModel==null || InModel.Count==0 || string.IsNullOrWhiteSpace(keyWord))
             {
                 return null;
             }
 
-            return InModel.FindAll(x => x.ID.Contains(keyWord) || x.Name.Contains(keyWord) || x.Desc.Contains(keyWord) || x.Description.Contains(keyWord));
+            if (isQuery)
+            {
+                return InModel.FindAll(x => x.ID==(keyWord));
+            }
+            else
+            {
+                return InModel.FindAll(x => x.ID.Contains(keyWord) || x.Name.Contains(keyWord) || x.Desc.Contains(keyWord) || x.Description.Contains(keyWord));
+            }
+            }
+
+
+
+
         }
-
-
-
-
-    }
 
     public class SplitHelper
     {

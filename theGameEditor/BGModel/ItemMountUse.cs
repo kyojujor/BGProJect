@@ -1,14 +1,13 @@
-﻿using BGModel.CommonHelper;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using BGModel.CommonHelper;
 
 namespace BGModel
 {
-    public class EnergyShield:bg_ItemBaseModel
+    public class ItemMountUse:bg_ItemBaseModel
     {
         [Description("ID")]
         public override string ID { get; set; }
@@ -20,35 +19,33 @@ namespace BGModel
         [Description("描述关联说明")]
         public override string Description { get; set; }
 
-        public string SkillRandPack { get; set; }
+        public string Photo { get; set; }
+        public string CoolDownTime { get; set; }
+        public string CoolDownCategory { get; set; }
+        public string FragmentComposePack { get; set; }
         public string Only { get; set; }
-        public string LimitedPack { get; set; }
+        public string FuncPack { get; set; }
         public string script { get; set; }
         public string ItemType { get; set; }
-        public string ArtPack { get; set; }
-        public string EquipType { get; set; }
-        public string HaloLevel { get; set; }
         public string ColorLevel { get; set; }
         public string Level { get; set; }
-        public string Hardiness { get; set; }
-        public string MaxHardiness { get; set; }
         public string BindType { get; set; }
         public string CantDelete { get; set; }
         public string CantDepot { get; set; }
         public string CantSell { get; set; }
         public string Task { get; set; }
-        public string PropPack { get; set; }
+        public string Amount { get; set; }
+        public string MaxAmount { get; set; }
+        public string UseNumber { get; set; }
+        public string Disappear { get; set; }
         public string SellPrice1 { get; set; }
         public string BuyPrice1 { get; set; }
-        public string BuyPrice2 { get; set; }
-        public string BuyPrice3 { get; set; }
-        public string BuyPrice4 { get; set; }
-        public string EnergyValue { get; set; }
-        public string MaxEnergyValue { get; set; }
-        public string RequireLevel { get; set; }
-        public string TextureType { get; set; }
-        public string EquipWeaponPack { get; set; }
-        public string ResolvePack { get; set; }
+        public string SkillPack { get; set; }
+        public string ValidTime { get; set; }
+        public string ArtPack { get; set; }
+        public string LimitedPack { get; set; }
         public string LogicPack { get; set; }
+        public string TextureType { get; set; }
+        public string CanAskToBuy { get; set; }
     }
 }

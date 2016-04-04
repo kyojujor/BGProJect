@@ -79,24 +79,29 @@
             this.labelTextBox2 = new CompositeControllerDemo.LabelTextBox();
             this.labelTextBox1 = new CompositeControllerDemo.LabelTextBox();
             this.ItemListBox = new System.Windows.Forms.ListBox();
-            this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.TabDrop = new System.Windows.Forms.TabPage();
+            this.btn_DropWSearch = new System.Windows.Forms.Button();
+            this.TB_DropWSearch = new System.Windows.Forms.TextBox();
+            this.DGV_Item = new System.Windows.Forms.DataGridView();
             this.DGV_Team = new System.Windows.Forms.DataGridView();
             this.DGVDrop_Team = new System.Windows.Forms.DataGridView();
             this.DGVDrop_World = new System.Windows.Forms.DataGridView();
-            this.DGV_Item = new System.Windows.Forms.DataGridView();
+            this.button1 = new System.Windows.Forms.Button();
+            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.tb_idt = new System.Windows.Forms.TextBox();
             this.TabMainContorler.SuspendLayout();
             this.tabCommonItem.SuspendLayout();
-            this.tabPage2.SuspendLayout();
+            this.TabDrop.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.DGV_Item)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.DGV_Team)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.DGVDrop_Team)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.DGVDrop_World)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.DGV_Item)).BeginInit();
             this.SuspendLayout();
             // 
             // TabMainContorler
             // 
             this.TabMainContorler.Controls.Add(this.tabCommonItem);
-            this.TabMainContorler.Controls.Add(this.tabPage2);
+            this.TabMainContorler.Controls.Add(this.TabDrop);
             this.TabMainContorler.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.TabMainContorler.ItemSize = new System.Drawing.Size(90, 40);
             this.TabMainContorler.Location = new System.Drawing.Point(2, 4);
@@ -108,6 +113,7 @@
             // 
             // tabCommonItem
             // 
+            this.tabCommonItem.Controls.Add(this.tb_idt);
             this.tabCommonItem.Controls.Add(this.button_ItemAddGold);
             this.tabCommonItem.Controls.Add(this.TB_ITEM_count);
             this.tabCommonItem.Controls.Add(this.btn_richClear);
@@ -179,7 +185,7 @@
             // 
             // TB_ITEM_count
             // 
-            this.TB_ITEM_count.Location = new System.Drawing.Point(455, 695);
+            this.TB_ITEM_count.Location = new System.Drawing.Point(707, 698);
             this.TB_ITEM_count.Margin = new System.Windows.Forms.Padding(6, 5, 6, 5);
             this.TB_ITEM_count.Name = "TB_ITEM_count";
             this.TB_ITEM_count.Size = new System.Drawing.Size(180, 35);
@@ -614,48 +620,86 @@
             this.ItemListBox.TabIndex = 0;
             this.ItemListBox.MouseClick += new System.Windows.Forms.MouseEventHandler(this.ItemListBox_MouseClick);
             // 
-            // tabPage2
+            // TabDrop
             // 
-            this.tabPage2.Controls.Add(this.DGV_Item);
-            this.tabPage2.Controls.Add(this.DGV_Team);
-            this.tabPage2.Controls.Add(this.DGVDrop_Team);
-            this.tabPage2.Controls.Add(this.DGVDrop_World);
-            this.tabPage2.Location = new System.Drawing.Point(4, 44);
-            this.tabPage2.Margin = new System.Windows.Forms.Padding(4);
-            this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(4);
-            this.tabPage2.Size = new System.Drawing.Size(2848, 1505);
-            this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "tabPage2";
-            this.tabPage2.UseVisualStyleBackColor = true;
+            this.TabDrop.Controls.Add(this.textBox1);
+            this.TabDrop.Controls.Add(this.button1);
+            this.TabDrop.Controls.Add(this.btn_DropWSearch);
+            this.TabDrop.Controls.Add(this.TB_DropWSearch);
+            this.TabDrop.Controls.Add(this.DGV_Item);
+            this.TabDrop.Controls.Add(this.DGV_Team);
+            this.TabDrop.Controls.Add(this.DGVDrop_Team);
+            this.TabDrop.Controls.Add(this.DGVDrop_World);
+            this.TabDrop.Location = new System.Drawing.Point(4, 44);
+            this.TabDrop.Margin = new System.Windows.Forms.Padding(4);
+            this.TabDrop.Name = "TabDrop";
+            this.TabDrop.Padding = new System.Windows.Forms.Padding(4);
+            this.TabDrop.Size = new System.Drawing.Size(2848, 1505);
+            this.TabDrop.TabIndex = 1;
+            this.TabDrop.Text = "掉落相关";
+            this.TabDrop.UseVisualStyleBackColor = true;
+            // 
+            // btn_DropWSearch
+            // 
+            this.btn_DropWSearch.Location = new System.Drawing.Point(596, 1027);
+            this.btn_DropWSearch.Name = "btn_DropWSearch";
+            this.btn_DropWSearch.Size = new System.Drawing.Size(147, 49);
+            this.btn_DropWSearch.TabIndex = 5;
+            this.btn_DropWSearch.Text = "掉落表搜索";
+            this.btn_DropWSearch.UseVisualStyleBackColor = true;
+            this.btn_DropWSearch.Click += new System.EventHandler(this.btn_DropSearch_Click);
+            // 
+            // TB_DropWSearch
+            // 
+            this.TB_DropWSearch.Location = new System.Drawing.Point(100, 1034);
+            this.TB_DropWSearch.Name = "TB_DropWSearch";
+            this.TB_DropWSearch.Size = new System.Drawing.Size(407, 35);
+            this.TB_DropWSearch.TabIndex = 4;
+            // 
+            // DGV_Item
+            // 
+            this.DGV_Item.AllowUserToAddRows = false;
+            this.DGV_Item.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.DisplayedCells;
+            this.DGV_Item.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.DisplayedCells;
+            this.DGV_Item.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.DGV_Item.Location = new System.Drawing.Point(1812, 38);
+            this.DGV_Item.Name = "DGV_Item";
+            this.DGV_Item.RowTemplate.Height = 33;
+            this.DGV_Item.Size = new System.Drawing.Size(599, 1306);
+            this.DGV_Item.TabIndex = 3;
             // 
             // DGV_Team
             // 
+            this.DGV_Team.AllowUserToAddRows = false;
+            this.DGV_Team.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.DisplayedCells;
+            this.DGV_Team.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.DisplayedCells;
             this.DGV_Team.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.DGV_Team.Location = new System.Drawing.Point(886, 337);
             this.DGV_Team.Name = "DGV_Team";
             this.DGV_Team.RowTemplate.Height = 33;
-            this.DGV_Team.Size = new System.Drawing.Size(656, 630);
+            this.DGV_Team.Size = new System.Drawing.Size(837, 630);
             this.DGV_Team.TabIndex = 2;
-            this.DGV_Team.CellDoubleClick += DGV_Team_CellDoubleClick;
+            this.DGV_Team.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DGV_Team_CellDoubleClick);
             // 
             // DGVDrop_Team
             // 
-            this.DGVDrop_Team.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
-            this.DGVDrop_Team.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
+            this.DGVDrop_Team.AllowUserToAddRows = false;
+            this.DGVDrop_Team.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.DisplayedCells;
+            this.DGVDrop_Team.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.DisplayedCells;
             this.DGVDrop_Team.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.DGVDrop_Team.Location = new System.Drawing.Point(886, 38);
             this.DGVDrop_Team.Margin = new System.Windows.Forms.Padding(6, 5, 6, 5);
             this.DGVDrop_Team.Name = "DGVDrop_Team";
             this.DGVDrop_Team.RowTemplate.Height = 23;
-            this.DGVDrop_Team.Size = new System.Drawing.Size(656, 175);
+            this.DGVDrop_Team.Size = new System.Drawing.Size(837, 175);
             this.DGVDrop_Team.TabIndex = 1;
             this.DGVDrop_Team.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DGVDrop_Team_CellDoubleClick);
             // 
             // DGVDrop_World
             // 
-            this.DGVDrop_World.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
-            this.DGVDrop_World.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
+            this.DGVDrop_World.AllowUserToAddRows = false;
+            this.DGVDrop_World.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.DisplayedCells;
+            this.DGVDrop_World.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.DisplayedCells;
             this.DGVDrop_World.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.DGVDrop_World.Location = new System.Drawing.Point(51, 38);
             this.DGVDrop_World.Margin = new System.Windows.Forms.Padding(6, 5, 6, 5);
@@ -666,15 +710,28 @@
             this.DGVDrop_World.TabIndex = 0;
             this.DGVDrop_World.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DGVDrop_World_CellDoubleClick);
             // 
-            // DGV_Item
+            // button1
             // 
-            this.DGV_Item.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.DGV_Item.Location = new System.Drawing.Point(1812, 38);
-            this.DGV_Item.Name = "DGV_Item";
-            this.DGV_Item.RowTemplate.Height = 33;
-            this.DGV_Item.Size = new System.Drawing.Size(881, 1306);
-            this.DGV_Item.TabIndex = 3;
-            //this.DGV_Item.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DGV_Team_CellDoubleClick);
+            this.button1.Location = new System.Drawing.Point(1541, 1028);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(153, 72);
+            this.button1.TabIndex = 6;
+            this.button1.Text = "button1";
+            this.button1.UseVisualStyleBackColor = true;
+            // 
+            // textBox1
+            // 
+            this.textBox1.Location = new System.Drawing.Point(993, 1047);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(407, 35);
+            this.textBox1.TabIndex = 7;
+            // 
+            // tb_idt
+            // 
+            this.tb_idt.Location = new System.Drawing.Point(425, 644);
+            this.tb_idt.Name = "tb_idt";
+            this.tb_idt.Size = new System.Drawing.Size(100, 35);
+            this.tb_idt.TabIndex = 49;
             // 
             // FormMain
             // 
@@ -685,14 +742,16 @@
             this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "FormMain";
             this.Text = "Form1";
+            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.TabMainContorler.ResumeLayout(false);
             this.tabCommonItem.ResumeLayout(false);
             this.tabCommonItem.PerformLayout();
-            this.tabPage2.ResumeLayout(false);
+            this.TabDrop.ResumeLayout(false);
+            this.TabDrop.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.DGV_Item)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.DGV_Team)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.DGVDrop_Team)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.DGVDrop_World)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.DGV_Item)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -701,7 +760,7 @@
 
         private System.Windows.Forms.TabControl TabMainContorler;
         private System.Windows.Forms.TabPage tabCommonItem;
-        private System.Windows.Forms.TabPage tabPage2;
+        private System.Windows.Forms.TabPage TabDrop;
         public System.Windows.Forms.ListBox ItemListBox;
         private CompositeControllerDemo.LabelTextBox labelTextBox1;
         private CompositeControllerDemo.LabelTextBox labelTextBox36;
@@ -755,6 +814,11 @@
         private System.Windows.Forms.DataGridView DGVDrop_Team;
         private System.Windows.Forms.DataGridView DGV_Team;
         private System.Windows.Forms.DataGridView DGV_Item;
+        private System.Windows.Forms.Button btn_DropWSearch;
+        private System.Windows.Forms.TextBox TB_DropWSearch;
+        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.TextBox tb_idt;
     }
 }
 
